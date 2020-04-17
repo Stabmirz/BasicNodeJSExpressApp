@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<title>Get State Name</title>
+</head>
+<body>
+    <%- include('./partials/nav'); -%>
+    <div class="main-container  ml-200">
+        <form action="/state" method="POST">
+            <div class="container">
+                <h1>Get State Name</h1>
+                <hr>
+                <label for="stateName"><b>State Code</b></label>
+                <input type="text" placeholder="Enter State Code i. e. FL" name="stateCode" required>
+
+                <div class="btn-div">
+                    <button type="submit" class="submitBtn">Submit</button>
+                </div>
+            </div>
+
+        </form>
+        <div>
+            <% if (stateName !== null){%>
+            <p>The State Name is :  <%= stateName %></p>
+            <%}%>
+        </div>
+    </div>
