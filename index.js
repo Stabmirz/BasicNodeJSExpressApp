@@ -10,11 +10,11 @@ app.use(express.static('public'));
 
 app.set('view engine', 'ejs');
 
-var myself = require('./myself');
+// var myself = require('./myself');
 
 
 
-app.use('/myself', myself);
+// app.use('/myself', myself);
 
 app.get('/', (req,res)=>{
     return res.render('index');
@@ -106,6 +106,18 @@ app.post('/state', (req, res)=>{
 app.get('/about', (req,res)=>{
     return res.render('about', {name : 'Abi'});
 })
+app.get('/contact', (req,res)=>{
+     res.render('ContactUs', {result : null});
+})
+
+app.post('/contact', (req, res)=>{
+    let firstName = req.body.firstName;
+    let stateCode = req.body.stateCode; // typeof(stateCode) is string
+
+    console.log(firstName);
+     res.render('ContactUs', {result : firstName});
+})
+
 
 app.listen(3000, () => {
     console.log('Example app listening on port 3000!');
