@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
@@ -118,7 +119,33 @@ app.post('/contact', (req, res)=>{
      res.render('ContactUs', {result : firstName});
 })
 
+app.use(express.static(__dirname + '/public'));
+app.get('/chat', function (req, res) {
+ res.sendfile(__dirname + '/public/index.html');
+});
 
-app.listen(3000, () => {
-    console.log('Example app listening on port 3000!');
+const server = app.listen(3000);
+const io = require('socket.io').listen(server);
+
+var usernames = {};
+io.sockets.on('connection', function (socket) {
+ socket.on('sendchat', function (data) {
+ io.sockets.emit('updatechat', socket.username, data);
+ });
+
+ socket.on('adduser', function(username){
+ socket.username = username;
+ usernames[username] = username;
+ socket.emit('updatechat', 'SERVER', 'you have connected');
+ socket.broadcast.emit('updatechat', 'SERVER'
+ , username + ' has connected');
+ io.sockets.emit('updateusers', usernames);
+ });
+
+ socket.on('disconnect', function(){
+ delete usernames[socket.username];
+ io.sockets.emit('updateusers', usernames);
+ socket.broadcast.emit('updatechat', 'SERVER'
+ , socket.username + ' has disconnected');
+ });
 });
